@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from repository import workerRepository
-from config.database import getDbConnection
+from src.repository import workerRepository
+from src.config.database import getDbConnection
 import logging
 
 logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")

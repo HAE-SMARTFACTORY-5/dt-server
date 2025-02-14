@@ -1,16 +1,10 @@
 from fastapi import FastAPI
-from router import papercupRouter
-from router import imageRouter
+from src.router import workerRouter
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 app = FastAPI()
-app.include_router(papercupRouter.api, prefix='/papercups')
-app.include_router(imageRouter.api, prefix='/images')
-
-# 저장된 이미지 파일 접근 허용
-app.mount("/static/images", StaticFiles(directory="images"), name="static-images")
+app.include_router(workerRouter.api, prefix='/worker')
 
 # CORS 설정
 origins = ["*"]
