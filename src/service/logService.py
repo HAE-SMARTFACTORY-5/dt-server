@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from src.repository import workerRepository
+from repository import logRepository
 from src.config.database import getDbConnection
 import logging
 
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 def saveWorkerLog(saveRequest):
     try:
         connection = getDbConnection()
-        workerRepository.save(saveRequest, connection)
+        logRepository.save(saveRequest, connection)
         connection.commit()
     except Exception as e:
         connection.rollback()

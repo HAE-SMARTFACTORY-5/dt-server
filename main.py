@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from src.router import workerRouter
+from router import logRouter
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 app = FastAPI()
-app.include_router(workerRouter.api, prefix='/worker')
+app.include_router(logRouter.api, prefix='/log')
 
 # CORS 설정
 origins = ["*"]
