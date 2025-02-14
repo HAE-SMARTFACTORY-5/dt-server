@@ -29,3 +29,15 @@ def saveCellLog(saveRequest):
         raise HTTPException(status_code=500, detail=f"Error saveCellLog() in logService: {e}")
     finally:
         connection.close
+
+def saveRobotArmLog(saveRequest):
+    try:
+        connection = getDbConnection()
+        logRepository.saveRobotArmLog(saveRequest, connection)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmLog() in logService: {e}")
+    finally:
+        connection.close

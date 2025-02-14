@@ -15,3 +15,13 @@ class CellLogRequest(BaseModel):
     productId: Optional[int] = None
     processStatus: str
     completionRate: Optional[float] = None
+
+class RobotArmLogRequest(BaseModel):
+	robotArmId: int
+	locationX: float
+	locationY: float
+	locationZ: float
+	direction: float
+	angle1: float
+	angle2: float
+	angle3: float

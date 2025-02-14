@@ -29,3 +29,18 @@ def saveCellLog(saveRequest, connection):
     finally:
         cursor.close
         connection.close
+
+def saveRobotArmLog(saveRequest, connection):
+    query = '''
+        INSERT INTO robot_arm_log (robot_arm_id, location_x, location_y, location_z, direction, angle_1, angle_2, angle_3)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [saveRequest.robotArmId, saveRequest.locationX, saveRequest.locationY, saveRequest.locationZ,
+                               saveRequest.direction, saveRequest.angle1, saveRequest.angle2, saveRequest.angle3])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmLog() in logRepository: {e}")
+    finally:
+        cursor.close
+        connection.close

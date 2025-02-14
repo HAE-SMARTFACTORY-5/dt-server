@@ -13,3 +13,8 @@ def saveWokerLog(saveRequest: logDto.WokerLogRequest) -> str:
 def saveCellLog(saveRequest: logDto.CellLogRequest) -> str:
     logService.saveCellLog(saveRequest)
     return "OK"
+
+@api.post("/robot-arm", summary="로봇 팔 로그 저장")
+def saveCellLog(saveRequest: logDto.RobotArmLogRequest) -> str:
+    logService.saveRobotArmLog(saveRequest)
+    return "OK"
