@@ -15,6 +15,11 @@ def saveCellLog(saveRequest: logDto.CellLogRequest) -> str:
     return "OK"
 
 @api.post("/robot-arm", summary="로봇 팔 로그 저장")
-def saveCellLog(saveRequest: logDto.RobotArmLogRequest) -> str:
+def saveRobotArmLog(saveRequest: logDto.RobotArmLogRequest) -> str:
     logService.saveRobotArmLog(saveRequest)
+    return "OK"
+
+@api.post("/amr", summary="AMR 로그 저장")
+def saveAmrLog(saveRequest: logDto.AmrLogRequest) -> str:
+    logService.saveAmrLog(saveRequest)
     return "OK"

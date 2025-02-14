@@ -44,3 +44,18 @@ def saveRobotArmLog(saveRequest, connection):
     finally:
         cursor.close
         connection.close
+
+def saveAmrLog(saveRequest, connection):
+    query = '''
+        INSERT INTO amr_log (amr_id, location_x, location_y, location_z, hight, direction, speed)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [saveRequest.amrId, saveRequest.locationX, saveRequest.locationY, saveRequest.locationZ,
+                               saveRequest.hight, saveRequest.direction, saveRequest.speed])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error saveAmrLog() in logRepository: {e}")
+    finally:
+        cursor.close
+        connection.close

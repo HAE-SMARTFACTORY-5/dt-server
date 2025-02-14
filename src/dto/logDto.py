@@ -25,3 +25,12 @@ class RobotArmLogRequest(BaseModel):
 	angle1: float
 	angle2: float
 	angle3: float
+     
+class AmrLogRequest(BaseModel):
+	amrId: int
+	locationX: float
+	locationY: float
+	locationZ: float
+	hight: float
+	direction: float
+	speed: float
