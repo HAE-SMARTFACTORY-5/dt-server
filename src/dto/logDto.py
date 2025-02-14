@@ -9,3 +9,9 @@ class WokerLogRequest(BaseModel):
     locationY:	Optional[float] = None
     locationZ:	Optional[float] = None
     direction:	Optional[float] = None
+
+class CellLogRequest(BaseModel):
+    cellId: int
+    productId: Optional[int] = None
+    processStatus: str
+    completionRate: Optional[float] = None

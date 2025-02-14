@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from router import logRouter
+from src.router import logRouter
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 

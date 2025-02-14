@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from repository import logRepository
+from src.repository import logRepository
 from src.config.database import getDbConnection
 import logging
 
@@ -9,11 +9,23 @@ logger = logging.getLogger(__name__)
 def saveWorkerLog(saveRequest):
     try:
         connection = getDbConnection()
-        logRepository.save(saveRequest, connection)
+        logRepository.saveWorkerLog(saveRequest, connection)
         connection.commit()
     except Exception as e:
         connection.rollback()
         logging.error(e)
-        raise HTTPException(status_code=500, detail=f"Error savePapercup() in papercupService: {e}")
+        raise HTTPException(status_code=500, detail=f"Error saveWorkerLog() in logService: {e}")
+    finally:
+        connection.close
+
+def saveCellLog(saveRequest):
+    try:
+        connection = getDbConnection()
+        logRepository.saveCellLog(saveRequest, connection)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveCellLog() in logService: {e}")
     finally:
         connection.close
