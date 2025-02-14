@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-from src.router import logRouter
+from src.router import logRouter, eventRouter
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 app = FastAPI()
 app.include_router(logRouter.api, prefix='/log')
+app.include_router(eventRouter.api, prefix='/evnet')
 
 # CORS 설정
 origins = ["*"]
