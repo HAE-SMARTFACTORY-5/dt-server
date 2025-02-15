@@ -17,3 +17,16 @@ def saveEvent(saveRequest):
         raise HTTPException(status_code=500, detail=f"Error saveEvent() in eventService: {e}")
     finally:
         connection.close
+
+def getElventLogs(eventId, minute):
+    try:
+        connection = getDbConnection()
+        response = eventRepository.findByLogs(eventId, minute, connection)
+        connection.commit()
+        return response
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveEvent() in eventService: {e}")
+    finally:
+        connection.close
