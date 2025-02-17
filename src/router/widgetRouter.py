@@ -11,3 +11,7 @@ def getTotalWidget(fatoryId: int) -> widgetDto.TotalWidgetResponse:
 @api.get("/cell", summary="셀 위젯 조회", description="processTime는 분단위")
 def getCellWidget(cellId: int) -> widgetDto.CellWidgetResponse:
     return widgetService.getCellWidget(cellId)
+
+@api.get("/robot-arm", summary="설비 위젯 조회")
+def getRobotArmWidget(robotArmId: int) -> widgetDto.RobotArmWidgetResponse:
+    return widgetService.getRobotArmWidget(robotArmId)

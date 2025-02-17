@@ -40,30 +40,62 @@ class CellWidgetResponse(BaseModel):
     def of(cls, result, processTime, cellProcessRate):
         if result == None:
             return cls(
-                cellId=None,
-                cellType=None,
-                startTime=None,
-                processTime=None,
-                processStatus=None,
-                completionRate=None,
-                processRate=cellProcessRate,
-                productId=None,
-                productModel=None,
-                productColor=None,
-                productProcessRate=None,
-                customerId=None
+            cellId=None,
+            cellType=None,
+            startTime=None,
+            processTime=None,
+            processStatus=None,
+            completionRate=None,
+            processRate=cellProcessRate,
+            productId=None,
+            productModel=None,
+            productColor=None,
+            productProcessRate=None,
+            customerId=None
             )
         return cls(
-                cellId=result['cell_id'],
-                cellType=result['type'],
-                startTime=str(result['recent_start_time']),
-                processTime=str(int(processTime.total_seconds()/60)),
-                processStatus=result['process_status'],
-                completionRate=result['completion_rate'],
-                processRate=cellProcessRate,
-                productId=result['product_id'],
-                productModel=result['model'],
-                productColor=result['color'],
-                productProcessRate=result['process_rate'],
-                customerId=result['customer_id']
+            cellId=result['cell_id'],
+            cellType=result['type'],
+            startTime=str(result['recent_start_time']),
+            processTime=str(int(processTime.total_seconds()/60)),
+            processStatus=result['process_status'],
+            completionRate=result['completion_rate'],
+            processRate=cellProcessRate,
+            productId=result['product_id'],
+            productModel=result['model'],
+            productColor=result['color'],
+            productProcessRate=result['process_rate'],
+            customerId=result['customer_id']
+        )
+    
+class RobotArmWidgetResponse(BaseModel):
+    robotArmId: Optional[int] = None
+    recentStartTime: Optional[str] = None
+    processTime: Optional[int] = None
+    operatingStatus: Optional[str] = None
+    fever: Optional[float] = None
+    electricCurrent: Optional[float] = None
+    vibration: Optional[list] = None
+
+    @classmethod
+    def of(cls, result, processTime, vibration):
+        if result == None:
+            return cls(
+                robotArmId=None,
+                recentStartTime=None,
+                processTime=None,
+                operatingStatus=None,
+                fever=None,
+                electricCurrent=None,
+                vibration=None
+            )
+        
+        return cls(
+            robotArmId=result['robot_arm_id'],
+            recentStartTime=str(result['recent_start_time']),
+            processTime=str(int(processTime.total_seconds()/60)),
+            operatingStatus=result['operating_status'],
+            fever=result['fever'],
+            electricCurrent=result['electric_current'],
+            vibration=vibration
         )

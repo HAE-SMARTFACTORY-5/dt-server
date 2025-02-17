@@ -50,6 +50,28 @@ def getCellWidget(cellId):
     except Exception as e:
         connection.rollback()
         logging.error(e)
-        raise HTTPException(status_code=500, detail=f"Error getTotalWidget() in widgetService: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getCellWidget() in widgetService: {e}")
     finally:
         connection.close
+
+def getRobotArmWidget(robotArmId):
+    # try:
+    connection = getDbConnection()
+    result = widgetRepository.getRobotArmWidget(robotArmId, connection)
+    current_time = datetime.now()
+    print("==dd", result)
+    # 현재 실행중인 시간
+    processTime = None
+    if result != None:
+        processTime = current_time - result['recent_start_time']
+
+    vibration = widgetRepository.getRobotArmVibration(robotArmId, connection)
+    
+    connection.commit()
+    return widgetDto.RobotArmWidgetResponse.of(result=result, processTime=processTime, vibration=vibration)
+    # except Exception as e:
+    #     connection.rollback()
+    #     logging.error(e)
+    #     raise HTTPException(status_code=500, detail=f"Error getRobotArmWidget() in widgetService: {e}")
+    # finally:
+    #     connection.close
