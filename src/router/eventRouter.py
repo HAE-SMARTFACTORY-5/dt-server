@@ -5,7 +5,7 @@ from typing import Dict, Any
 
 api = APIRouter()
 
-@api.post("", summary="작업자 로그 저장")
+@api.post("", summary="에러 이벤트 저장")
 def saveEvent(saveRequest: eventDto.SaveRequest) -> str:
     eventService.saveEvent(saveRequest)
     return "OK"
