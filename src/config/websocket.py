@@ -22,11 +22,10 @@ class ConnectionManager:
             if not self.rooms[typeId]:
                 del self.rooms[typeId]
 
-    async def sendBroadcastWithOutUserId(self, typeId: str, message: str):
+    async def sendBroadcast(self, typeId: str, message: str):
         if typeId in self.rooms:
-            for user_id, websocket in self.rooms[typeId].values():
-                if user_id != exclude_user: 
-                    await websocket.send_text(message)
+            for websocket in self.rooms[typeId].values():
+                await websocket.send_text(message)
 
     async def sendToUserInRoom(self, typeId: str, userId: str, message: str):
         if typeId in self.rooms and str(userId) in self.rooms[typeId]:
