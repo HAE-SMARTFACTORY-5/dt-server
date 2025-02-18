@@ -32,15 +32,15 @@ def saveMonthlyPlan(fatoryId, saveRequest):
     finally:
         connection.close
 
-def updateDailyResult(fatoryId):
+def updateResult(fatoryId):
     try:
         connection = getDbConnection()
-        response = planRepository.updateDailyResult(fatoryId, connection)
+        planRepository.updateDailyResult(fatoryId, connection)
+        planRepository.updateMonthlyResult(fatoryId, connection)
         connection.commit()
-        return response
     except Exception as e:
         connection.rollback()
         logging.error(e)
-        raise HTTPException(status_code=500, detail=f"Error updateDailyResult() in planService: {e}")
+        raise HTTPException(status_code=500, detail=f"Error updateResult() in planService: {e}")
     finally:
         connection.close

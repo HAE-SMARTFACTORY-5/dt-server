@@ -43,3 +43,18 @@ def updateDailyResult(factoryId, connection):
     finally:
         cursor.close
         connection.close
+
+def updateMonthlyResult(factoryId, connection):
+    query = '''
+        UPDATE monthly_factory_data as mfd
+        SET mfd.monthly_total_production_result = mfd.monthly_total_production_result+1
+        WHERE mfd.factory_id=%s AND mfd.date=date_format(now(),_utf8mb4'%Y-%m');
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [factoryId])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error updateMonthlyResult() in planRepository: {e}")
+    finally:
+        cursor.close
+        connection.close
