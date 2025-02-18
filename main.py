@@ -15,14 +15,14 @@ manager = websocket.getConnectionManager()
 
 @app.websocket("/ws/{typeId}/{clientId}")
 async def websocketEndpoint(websocket: WebSocket, typeId: str, clientId: str):
-    await manager.connect(typeId, websocket)
+    await manager.connect(typeId, clientId, websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.sendToTypes(typeId, f"Client {clientId} says: {data}")
+            await manager.sendBroadcastWithOutUserId(typeId, f"Client {clientId} says: {data}")
     except WebSocketDisconnect:
         manager.disconnect(typeId, websocket)
-        await manager.sendToTypes(typeId, f"Client {clientId} Disconnect.")
+        await manager.sendBroadcastWithOutUserId(typeId, f"Client {clientId} Disconnect.")
 
 # CORS 설정
 origins = ["*"]

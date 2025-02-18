@@ -20,12 +20,12 @@ def saveMonthlyPlan(fatoryId: int, saveRequest: planDto.PlanRequest) -> str:
 async def updateResult(fatoryId: int) -> str:
     result = planService.updateResult(fatoryId)
     jsonResult = socketDto.SocketTypeResponse.of("WORKER", result).toJson()
-    await manager.sendToTypes('factory', jsonResult)
+    await manager.sendBroadcastWithOutUserId('factory', jsonResult)
     return "OK"
 
 @api.patch("/daily/defect/{fatoryId}", summary="공장 일일 결함 수 업데이트", description="오늘 날짜의 일일 결함수를 1씩 증가시킨다")
 async def updateDailtDefect(fatoryId: int) -> str:
     result = planService.updateDailtDefect(fatoryId)
     jsonResult = socketDto.SocketTypeResponse.of("WORKER", result).toJson()
-    await manager.sendToTypes('factory', jsonResult)
+    await manager.sendBroadcastWithOutUserId('factory', jsonResult)
     return "OK"
