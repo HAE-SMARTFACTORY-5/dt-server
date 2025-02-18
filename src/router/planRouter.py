@@ -18,3 +18,8 @@ def saveMonthlyPlan(fatoryId: int, saveRequest: planDto.PlanRequest) -> str:
 def updateResult(fatoryId: int) -> str:
     planService.updateResult(fatoryId)
     return "OK"
+
+@api.patch("/daily/defect/{fatoryId}", summary="공장 일일 결함 수 업데이트", description="오늘 날짜의 일일 결함수를 1씩 증가시킨다")
+def updateDailtDefect(fatoryId: int) -> str:
+    planService.updateDailtDefect(fatoryId)
+    return "OK"

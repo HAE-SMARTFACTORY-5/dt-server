@@ -58,3 +58,18 @@ def updateMonthlyResult(factoryId, connection):
     finally:
         cursor.close
         connection.close
+
+def updateDailtDefect(factoryId, connection):
+    query = '''
+        UPDATE daily_factory_data as dfd
+        SET dfd.defective_quality_count = dfd.defective_quality_count+1
+        WHERE dfd.factory_id=%s AND dfd.date=date_format(now(),_utf8mb4'%Y-%m-%d');
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [factoryId])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error updateDailtDefect() in planRepository: {e}")
+    finally:
+        cursor.close
+        connection.close

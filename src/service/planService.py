@@ -44,3 +44,15 @@ def updateResult(fatoryId):
         raise HTTPException(status_code=500, detail=f"Error updateResult() in planService: {e}")
     finally:
         connection.close
+
+def updateDailtDefect(fatoryId):
+    try:
+        connection = getDbConnection()
+        planRepository.updateDailtDefect(fatoryId, connection)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error updateDailtDefect() in planService: {e}")
+    finally:
+        connection.close
