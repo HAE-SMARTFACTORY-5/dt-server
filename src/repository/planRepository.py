@@ -28,3 +28,18 @@ def saveMonthlyPlan(factoryId, saveRequest, connection):
     finally:
         cursor.close
         connection.close
+
+def updateDailyResult(factoryId, connection):
+    query = '''
+        UPDATE daily_factory_data as dfd
+        SET dfd.daily_total_production_result = dfd.daily_total_production_result+1
+        WHERE dfd.factory_id=%s AND dfd.date=date_format(now(),_utf8mb4'%Y-%m-%d');
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [factoryId])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error updateDailyResult() in planRepository: {e}")
+    finally:
+        cursor.close
+        connection.close
