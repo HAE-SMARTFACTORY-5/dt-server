@@ -59,3 +59,17 @@ def saveAmrLog(saveRequest, connection):
     finally:
         cursor.close
         connection.close
+
+def saveRobotArmStatus(saveRequest, connection):
+    query = '''
+        INSERT INTO robot_arm_status_data (robot_arm_id, fever, electric_current, vibration)
+        VALUES (%s, %s, %s, %s)
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [saveRequest.robotArmId, saveRequest.fever, saveRequest.electricCurrent, saveRequest.vibration])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmStatus() in logRepository: {e}")
+    finally:
+        cursor.close
+        connection.close

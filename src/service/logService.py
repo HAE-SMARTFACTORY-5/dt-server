@@ -53,3 +53,15 @@ def saveAmrLog(saveRequest):
         raise HTTPException(status_code=500, detail=f"Error saveAmrLog() in logService: {e}")
     finally:
         connection.close
+
+def saveRobotArmStatus(saveRequest):
+    try:
+        connection = getDbConnection()
+        logRepository.saveRobotArmStatus(saveRequest, connection)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmStatus() in logService: {e}")
+    finally:
+        connection.close

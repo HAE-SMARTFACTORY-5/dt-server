@@ -23,3 +23,8 @@ def saveRobotArmLog(saveRequest: logDto.RobotArmLogRequest) -> str:
 def saveAmrLog(saveRequest: logDto.AmrLogRequest) -> str:
     logService.saveAmrLog(saveRequest)
     return "OK"
+
+@api.post("/robot-arm-status", summary="로봇 팔 상태 저장")
+def saveRobotArmStatus(saveRequest: logDto.RobotArmStatusRequest) -> str:
+    logService.saveRobotArmStatus(saveRequest)
+    return "OK"

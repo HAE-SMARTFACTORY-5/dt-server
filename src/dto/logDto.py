@@ -34,6 +34,15 @@ class AmrLogRequest(BaseModel):
 	hight: float
 	direction: float
 	speed: float
+
+class RobotArmStatusRequest(BaseModel):
+    robotArmId: int
+    fever: float
+    electricCurrent: float
+    vibration: float
+
+
+#-------------- Response
       
 class WorkerLogResponse(BaseModel):
     workerId: Optional[int] = None
