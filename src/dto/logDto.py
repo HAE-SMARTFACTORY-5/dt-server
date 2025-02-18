@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
-class WokerLogRequest(BaseModel):
+class WokerUpdateRequest(BaseModel):
     workerId: int
     cellId: int
     workStatus:	Optional[str] = None
@@ -12,12 +13,15 @@ class WokerLogRequest(BaseModel):
 
 class CellLogRequest(BaseModel):
     cellId: int
+    recentStartTime: datetime
     productId: Optional[int] = None
     processStatus: str
     completionRate: Optional[float] = None
 
 class RobotArmLogRequest(BaseModel):
 	robotArmId: int
+	recentStartTime: datetime
+	operatingStatus: str
 	locationX: float
 	locationY: float
 	locationZ: float
@@ -31,9 +35,14 @@ class AmrLogRequest(BaseModel):
 	locationX: float
 	locationY: float
 	locationZ: float
-	hight: float
+	height: float
 	direction: float
-	speed: float
+	velocity: float
+	destination: str
+	battery: float
+	collisionEtected: bool
+	state: str
+
 
 class RobotArmStatusRequest(BaseModel):
     robotArmId: int
@@ -54,7 +63,7 @@ class WorkerLogResponse(BaseModel):
     direction:	Optional[float] = None
 
     @classmethod
-    def of(cls, row):
+    def of(cls, row: dict):
         return cls(
                 workerId=row['worker_id'],
                 cellId=row['worker_cell_id'],
@@ -63,6 +72,17 @@ class WorkerLogResponse(BaseModel):
                 locationY=row['worker_location_y'],
                 locationZ=row['worker_location_z'],
                 direction=row['worker_direction']
+        )
+    @classmethod
+    def withrequest(cls, request: WokerUpdateRequest):
+        return cls(
+                workerId=request.workerId,
+                cellId=request.cellId,
+                workStatus=request.workStatus,
+                locationX=request.locationX,
+                locationY=request.locationY,
+                locationZ=request.locationZ,
+                direction=request.direction
         )
 
 class CellLogResponse(BaseModel):
@@ -78,6 +98,15 @@ class CellLogResponse(BaseModel):
                 productId=row['product_id'],
                 processStatus=row['process_status'],
                 completionRate=row['completion_rate']
+        )
+    
+    @classmethod
+    def withrequest(cls, request: CellLogRequest):
+        return cls(
+                cellId=request.cellId,
+                productId=request.productId,
+                processStatus=request.processStatus,
+                completionRate=request.completionRate
         )
 
 class RobotArmLogResponse(BaseModel):
@@ -102,16 +131,33 @@ class RobotArmLogResponse(BaseModel):
                 angle2=row['angle_2'],
                 angle3=row['angle_3']
         )
+    
+    @classmethod
+    def withrequest(cls, request: RobotArmLogRequest):
+        return cls(
+                robotArmId=request.robotArmId,
+                locationX=request.locationX,
+                locationY=request.locationY,
+                locationZ=request.locationZ,
+                direction=request.direction,
+                angle1=request.angle1,
+                angle2=request.angle2,
+                angle3=request.angle3,
+        )
      
 class AmrLogResponse(BaseModel):
     amrId: Optional[int] = None
     locationX: Optional[float] = None
     locationY: Optional[float] = None
     locationZ: Optional[float] = None
-    hight: Optional[float] = None
+    height: Optional[float] = None
     direction: Optional[float] = None
-    speed: Optional[float] = None
-    
+    velocity: Optional[float] = None
+    state: Optional[str] = None
+    destination: Optional[str] = None
+    battery: Optional[float] = None
+    collisionEtected: Optional[bool] = None
+
     @classmethod
     def of(cls, row):
         return cls(
@@ -119,10 +165,28 @@ class AmrLogResponse(BaseModel):
                 locationX=row['amr_location_x'],
                 locationY=row['amr_location_y'],
                 locationZ=row['amr_location_z'],
-                hight=row['hight'],
+                height=row['height'],
                 direction=row['amr_direction'],
-                speed=row['speed']
+                velocity=row['velocity'],
+                state=row['state'],
+                destination=row['destination'],
+                battery=row['battery'],
+                collisionEtected=row['collision_etected'],
         )
     
+    @classmethod
+    def withrequest(cls, request: AmrLogRequest):
+        return cls(
+                amrId=request.amrId,
+                locationX=request.locationX,
+                locationY=request.locationY,
+                locationZ=request.locationZ,
+                height=request.height,
+                direction=request.direction,
+                velocity=request.velocity,
+                state=request.state,
+                destination=request.destination,
+                battery=request.battery,
+                collisionEtected=request.collisionEtected
+        )
     
-      

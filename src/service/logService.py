@@ -1,16 +1,19 @@
 from fastapi import HTTPException
 from src.repository import logRepository
+from src.service import widgetService
 from src.config.database import getDbConnection
+from src.dto import logDto, widgetDto
 import logging
 
 logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-def saveWorkerLog(saveRequest):
+def updateWorker(request):
     try:
         connection = getDbConnection()
-        logRepository.saveWorkerLog(saveRequest, connection)
+        logRepository.updateWorker(request, connection)
         connection.commit()
+        return logDto.WorkerLogResponse.withrequest(request=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
@@ -18,11 +21,12 @@ def saveWorkerLog(saveRequest):
     finally:
         connection.close
 
-def saveCellLog(saveRequest):
+def updateCell(request):
     try:
         connection = getDbConnection()
-        logRepository.saveCellLog(saveRequest, connection)
+        logRepository.updateCell(request, connection)
         connection.commit()
+        return logDto.CellLogResponse.withrequest(request=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
@@ -30,11 +34,12 @@ def saveCellLog(saveRequest):
     finally:
         connection.close
 
-def saveRobotArmLog(saveRequest):
+def updateRobotArm(request):
     try:
         connection = getDbConnection()
-        logRepository.saveRobotArmLog(saveRequest, connection)
+        logRepository.updateRobotArm(request, connection)
         connection.commit()
+        return logDto.RobotArmLogResponse.withrequest(request=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
@@ -42,11 +47,12 @@ def saveRobotArmLog(saveRequest):
     finally:
         connection.close
 
-def saveAmrLog(saveRequest):
+def updateAmr(request):
     try:
         connection = getDbConnection()
-        logRepository.saveAmrLog(saveRequest, connection)
+        logRepository.updateAmr(request, connection)
         connection.commit()
+        return logDto.AmrLogResponse.withrequest(request=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
@@ -59,6 +65,7 @@ def saveRobotArmStatus(saveRequest):
         connection = getDbConnection()
         logRepository.saveRobotArmStatus(saveRequest, connection)
         connection.commit()
+        return widgetService.getRobotArmWidget(saveRequest.robotArmId)
     except Exception as e:
         connection.rollback()
         logging.error(e)

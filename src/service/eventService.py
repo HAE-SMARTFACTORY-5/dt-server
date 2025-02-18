@@ -27,6 +27,6 @@ def getElventLogs(eventId, minute):
     except Exception as e:
         connection.rollback()
         logging.error(e)
-        raise HTTPException(status_code=500, detail=f"Error saveEvent() in eventService: {e}")
+        raise HTTPException(status_code=500, detail=f"Error getElventLogs() in eventService: {e}")
     finally:
         connection.close

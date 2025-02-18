@@ -13,7 +13,7 @@ def getTotalWidget(factoryId, connection):
     try:
         cursor = connection.cursor(dictionary=True)
         cursor.execute(query, [factoryId])
-        result = cursor.fetchone()
+        result = cursor.fetchall()[0]
         return widgetDto.TotalWidgetResponse.of(result=result)
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error getTotalWidget() in widgetRepository: {e}")
@@ -22,21 +22,36 @@ def getTotalWidget(factoryId, connection):
         connection.close
 
 def getCellWidget(cellId, connection):
+    # query = '''
+    # SELECT c.cell_id as cell_id,
+    #         c.type as type,
+    #         c.recent_start_time as recent_start_time,
+    #         cl.completion_rate as completion_rate,
+    #         cl.process_status as process_status,
+    #         p.product_id as product_id,
+    #         p.model as model,
+    #         p.color as color,
+    #         p.process_rate as process_rate,
+    #         p.customer_id as customer_id
+    # FROM cell as c
+    #     LEFT JOIN cell_log as cl ON c.cell_id = cl.cell_id
+    #     LEFT JOIN product as p ON p.product_id = cl.product_id
+    # WHERE c.cell_id = %s AND cl.created_at = CURDATE();
+    # ''' 
     query = '''
     SELECT c.cell_id as cell_id,
             c.type as type,
             c.recent_start_time as recent_start_time,
-            cl.completion_rate as completion_rate,
-            cl.process_status as process_status,
+            c.completion_rate as completion_rate,
+            c.process_status as process_status,
             p.product_id as product_id,
             p.model as model,
             p.color as color,
             p.process_rate as process_rate,
             p.customer_id as customer_id
     FROM cell as c
-        LEFT JOIN cell_log as cl ON c.cell_id = cl.cell_id
-        LEFT JOIN product as p ON p.product_id = cl.product_id
-    WHERE c.cell_id = %s AND cl.created_at = CURDATE();
+        LEFT JOIN product as p ON p.product_id = c.product_id
+    WHERE c.cell_id = %s;
     ''' 
     try:
         cursor = connection.cursor(dictionary=True)
@@ -65,16 +80,23 @@ def getCellErrorTime(cellId, connection):
         connection.close
 
 def getRobotArmWidget(robotArmId, connection):
+    # query = '''
+    #     SELECT *
+    #     FROM robot_arm as ra
+    #         LEFT JOIN robot_arm_status_data as rasd ON ra.robot_arm_id = rasd.robot_arm_id
+    #     WHERE ra.robot_arm_id = %s AND rasd.created_at = NOW();
+    # ''' 
     query = '''
         SELECT *
         FROM robot_arm as ra
             LEFT JOIN robot_arm_status_data as rasd ON ra.robot_arm_id = rasd.robot_arm_id
-        WHERE ra.robot_arm_id = %s AND rasd.created_at = NOW();
+        WHERE ra.robot_arm_id = %s;
     ''' 
+
     try:
         cursor = connection.cursor(dictionary=True)
         cursor.execute(query, [robotArmId])
-        return cursor.fetchone()
+        return cursor.fetchall()[0]
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error getCellWidget() in widgetRepository: {e}")
     finally:
@@ -82,6 +104,12 @@ def getRobotArmWidget(robotArmId, connection):
         connection.close
 
 def getRobotArmVibration(robotArmId, connection):
+    # query = '''
+    #     SELECT vibration
+    #     FROM robot_arm_status_data AS rasd
+    #     WHERE rasd.robot_arm_id = %s AND rasd.created_at BETWEEN NOW() - INTERVAL 100 SECOND AND NOW()
+    #     ORDER BY rasd.created_at DESC;
+    # ''' 
     query = '''
         SELECT vibration
         FROM robot_arm_status_data AS rasd

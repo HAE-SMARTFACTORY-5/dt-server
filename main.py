@@ -1,13 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from src.router import logRouter, eventRouter, widgetRouter, planRouter
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+from src.config import websocket
+import uvicorn  
 
 app = FastAPI()
 app.include_router(logRouter.api, prefix='/log')
 app.include_router(eventRouter.api, prefix='/evnet')
 app.include_router(widgetRouter.api, prefix='/widget')
 app.include_router(planRouter.api, prefix='/plan')
+
+
+manager = websocket.getConnectionManager()
+
+@app.websocket("/ws/{typeId}/{clientId}")
+async def websocketEndpoint(websocket: WebSocket, typeId: str, clientId: str):
+    await manager.connect(typeId, websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.sendToTypes(typeId, f"Client {clientId} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(typeId, websocket)
+        await manager.sendToTypes(typeId, f"Client {clientId} Disconnect.")
 
 # CORS 설정
 origins = ["*"]

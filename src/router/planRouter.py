@@ -1,8 +1,10 @@
 from fastapi import APIRouter
 from src.service import planService
-from src.dto import planDto
+from src.dto import planDto, socketDto
+from src.config import websocket
 
 api = APIRouter()
+manager = websocket.getConnectionManager()
 
 @api.post("/daily/{fatoryId}", summary="공장 일일 목표치 설정")
 def saveDailyPlan(fatoryId: int, saveRequest: planDto.PlanRequest) -> str:
@@ -15,11 +17,15 @@ def saveMonthlyPlan(fatoryId: int, saveRequest: planDto.PlanRequest) -> str:
     return "OK"
 
 @api.patch("/result/{fatoryId}", summary="공장 일일/월별 생산량 업데이트", description="오늘 날짜의 일일/월별 생산량을 1씩 증가시킨다")
-def updateResult(fatoryId: int) -> str:
-    planService.updateResult(fatoryId)
+async def updateResult(fatoryId: int) -> str:
+    result = planService.updateResult(fatoryId)
+    jsonResult = socketDto.SocketTypeResponse.of("WORKER", result).toJson()
+    await manager.sendToTypes('factory', jsonResult)
     return "OK"
 
 @api.patch("/daily/defect/{fatoryId}", summary="공장 일일 결함 수 업데이트", description="오늘 날짜의 일일 결함수를 1씩 증가시킨다")
-def updateDailtDefect(fatoryId: int) -> str:
-    planService.updateDailtDefect(fatoryId)
+async def updateDailtDefect(fatoryId: int) -> str:
+    result = planService.updateDailtDefect(fatoryId)
+    jsonResult = socketDto.SocketTypeResponse.of("WORKER", result).toJson()
+    await manager.sendToTypes('factory', jsonResult)
     return "OK"

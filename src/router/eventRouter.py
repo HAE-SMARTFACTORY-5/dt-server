@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from src.service import eventService
 from src.dto import eventDto
-from typing import Dict, Any
+from typing import Dict
 
 api = APIRouter()
 

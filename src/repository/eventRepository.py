@@ -17,6 +17,7 @@ def save(saveRequest, connection):
         cursor.close
         connection.close
 
+# for 리플레이
 def findByLogs(eventId, minute, connection):
     query = '''
         WITH event_filtered AS (
@@ -46,7 +47,11 @@ def findByLogs(eventId, minute, connection):
             amr.location_z AS amr_location_z,
             amr.hight,
             amr.direction  AS amr_direction,
-            amr.speed,
+            amr.velocity,
+            amr.state AS state,
+            amr.destination AS destination,
+            amr.battery AS battery,
+            amr.collision_etected AS collision_etected,
             cell.cell_id,
             cell.product_id,
             cell.process_status,
@@ -67,12 +72,11 @@ def findByLogs(eventId, minute, connection):
             worker.location_z AS worker_location_z,
             worker.direction AS worker_direction
         FROM log_filtered lf
-        LEFT JOIN amr_log amr ON lf.created_at = amr.created_at
-        LEFT JOIN cell_log cell ON lf.created_at = cell.created_at
-        LEFT JOIN robot_arm_log robot ON lf.created_at = robot.created_at
-        LEFT JOIN worker_log worker ON lf.created_at = worker.created_at
+            LEFT JOIN amr_log amr ON lf.created_at = amr.created_at
+            LEFT JOIN cell_log cell ON lf.created_at = cell.created_at
+            LEFT JOIN robot_arm_log robot ON lf.created_at = robot.created_at
+            LEFT JOIN worker_log worker ON lf.created_at = worker.created_at
         ORDER BY lf.created_at;
-
     ''' 
     try:
         cursor = connection.cursor(dictionary=True)
