@@ -14,3 +14,17 @@ def saveDailyPlan(factoryId, saveRequest, connection):
     finally:
         cursor.close
         connection.close
+
+def saveMonthlyPlan(factoryId, saveRequest, connection):
+    query = '''
+        INSERT INTO monthly_factory_data (factory_id, monthly_total_production_plan, date)
+        VALUES (%s, %s, date_format(%s,_utf8mb4'%Y-%m'))
+    '''
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query, [factoryId, saveRequest.totalProductionPlan, saveRequest.date])
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error saveMonthlyPlan() in planRepository: {e}")
+    finally:
+        cursor.close
+        connection.close

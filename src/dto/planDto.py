@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
       
-class DailyPlanRequest(BaseModel):
+class PlanRequest(BaseModel):
     totalProductionPlan: int
     date: date

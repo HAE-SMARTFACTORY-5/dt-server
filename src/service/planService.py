@@ -18,3 +18,16 @@ def saveDailyPlan(fatoryId, saveRequest):
         raise HTTPException(status_code=500, detail=f"Error saveDailyPlan() in planService: {e}")
     finally:
         connection.close
+
+def saveMonthlyPlan(fatoryId, saveRequest):
+    try:
+        connection = getDbConnection()
+        response = planRepository.saveMonthlyPlan(fatoryId, saveRequest, connection)
+        connection.commit()
+        return response
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveMonthPlan() in planService: {e}")
+    finally:
+        connection.close
