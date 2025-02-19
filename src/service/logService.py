@@ -60,10 +60,10 @@ def updateAmr(request):
     finally:
         connection.close
 
-def saveRobotArmStatus(saveRequest):
+def saveRobotArmVibration(saveRequest):
     try:
         connection = getDbConnection()
-        logRepository.saveRobotArmStatus(saveRequest, connection)
+        logRepository.saveRobotArmVibration(saveRequest, connection)
         connection.commit()
         return widgetService.getRobotArmWidget(saveRequest.robotArmId)
     except Exception as e:

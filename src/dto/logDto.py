@@ -29,6 +29,8 @@ class RobotArmLogRequest(BaseModel):
 	angle1: float
 	angle2: float
 	angle3: float
+	electric_current: float
+	fever: float
      
 class AmrLogRequest(BaseModel):
 	amrId: int
@@ -48,6 +50,10 @@ class RobotArmStatusRequest(BaseModel):
     robotArmId: int
     fever: float
     electricCurrent: float
+    vibration: float
+
+class RobotArmVibrationRequest(BaseModel):
+    robotArmId: int
     vibration: float
 
 
@@ -118,6 +124,8 @@ class RobotArmLogResponse(BaseModel):
     angle1: Optional[float] = None
     angle2: Optional[float] = None
     angle3: Optional[float] = None
+    electric_current: Optional[float] = None
+    fever: Optional[float] = None
 
     @classmethod
     def of(cls, row):
@@ -129,7 +137,9 @@ class RobotArmLogResponse(BaseModel):
                 direction=row['robot_direction'],
                 angle1=row['angle_1'],
                 angle2=row['angle_2'],
-                angle3=row['angle_3']
+                angle3=row['angle_3'],
+                electric_current=row['electric_current'],
+                fever=row['fever']
         )
     
     @classmethod
@@ -143,6 +153,8 @@ class RobotArmLogResponse(BaseModel):
                 angle1=request.angle1,
                 angle2=request.angle2,
                 angle3=request.angle3,
+                electric_current=request.electric_current,
+                fever=request.fever
         )
      
 class AmrLogResponse(BaseModel):

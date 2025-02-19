@@ -35,13 +35,13 @@ def updateCell(request, connection):
 def updateRobotArm(request, connection):
     query = '''
         UPDATE robot_arm AS ra
-        SET ra.recent_start_time = %s, ra.operating_status = %s, ra.location_x = %s, ra.location_y = %s, ra.location_z = %s, ra.direction = %s, ra.angle_1 = %s, ra.angle_2 = %s, ra.angle_3 = %s
+        SET ra.recent_start_time = %s, ra.operating_status = %s, ra.location_x = %s, ra.location_y = %s, ra.location_z = %s, ra.direction = %s, ra.angle_1 = %s, ra.angle_2 = %s, ra.angle_3 = %s, ra.electric_current = %s, ra.fever = %s
         WHERE ra.robot_arm_id = %s;
     '''
     try:
         cursor = connection.cursor(dictionary=True)
         cursor.execute(query, [request.recentStartTime, request.operatingStatus, request.locationX, request.locationY, request.locationZ,
-                               request.direction, request.angle1, request.angle2, request.angle3, request.robotArmId])
+                               request.direction, request.angle1, request.angle2, request.angle3, request.electric_current, request.fever, request.robotArmId])
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error saveRobotArmLog() in logRepository: {e}")
     finally:
@@ -64,16 +64,16 @@ def updateAmr(request, connection):
         cursor.close
         connection.close
 
-def saveRobotArmStatus(saveRequest, connection):
+def saveRobotArmVibration(saveRequest, connection):
     query = '''
-        INSERT INTO robot_arm_status_data (robot_arm_id, fever, electric_current, vibration)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO robot_arm_status_data (robot_arm_id, vibration)
+        VALUES (%s, %s)
     '''
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(query, [saveRequest.robotArmId, saveRequest.fever, saveRequest.electricCurrent, saveRequest.vibration])
+        cursor.execute(query, [saveRequest.robotArmId, saveRequest.vibration])
     except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=f"Error saveRobotArmStatus() in logRepository: {e}")
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmVibration() in logRepository: {e}")
     finally:
         cursor.close
         connection.close

@@ -36,9 +36,9 @@ async def saveAmrLog(saveRequest: logDto.AmrLogRequest) -> str:
     await manager.sendToUserInRoom('amr', result.amrId, jsonResult)
     return "OK"
 
-@api.post("/robot-arm-status", summary="로봇 팔 상태 저장")
-async def saveRobotArmStatus(saveRequest: logDto.RobotArmStatusRequest) -> str:
-    result = logService.saveRobotArmStatus(saveRequest)
+@api.post("/robot-arm-vibration", summary="로봇 팔 진동상태 저장")
+async def saveRobotArmVibration(saveRequest: logDto.RobotArmStatusRequest) -> str:
+    result = logService.saveRobotArmVibration(saveRequest)
     jsonResult = socketDto.SocketTypeResponse.of("ROBOT-ARM-STATUS", result).toJson()
     await manager.sendBroadcast('factory', jsonResult)
     return "OK"
