@@ -1,0 +1,8 @@
+# dependency
+fastapi
+mysql-connector-python
+python-dotenv
+requests
+uvicorn
+python-multipart
+websockets
