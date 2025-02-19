@@ -62,7 +62,7 @@ def getRobotArmWidget(robotArmId):
         # 현재 실행중인 시간
         processTime = None
         if result != None:
-            processTime = current_time - result['recent_start_time']
+            processTime = (current_time - result['recent_start_time'])*60
 
         vibration = widgetRepository.getRobotArmVibration(robotArmId, connection)
         
