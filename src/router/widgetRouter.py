@@ -7,7 +7,6 @@ api = APIRouter()
 @api.get("/total", summary="전체 위젯 조회")
 def getTotalWidget(fatoryId: int) -> widgetDto.TotalWidgetResponse:
     response = widgetService.getTotalWidget(fatoryId)
-    print("dd??c")
     return response
 
 @api.get("/cell", summary="셀 위젯 조회", description="processTime는 분단위")
