@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from src.dto import logDto
+from src.dto import workerDto, cellDto, robotArmDto, amrDto
 
 class SaveRequest(BaseModel):
 	workerId: Optional[int] = None
@@ -15,7 +15,7 @@ class EventLogsResponse(BaseModel):
 	Attributes: list
 
 class EventLogsData(BaseModel):
-	workerLog: logDto.WorkerLogResponse
-	cellLog: logDto.CellLogResponse
-	robotArmLog: logDto.RobotArmLogResponse
-	amrLog: logDto.AmrLogResponse
+	workerLog: workerDto.WorkerResponse
+	cellLog: cellDto.CellResponse
+	robotArmLog: robotArmDto.RobotArmResponse
+	amrLog: amrDto.AmrResponse

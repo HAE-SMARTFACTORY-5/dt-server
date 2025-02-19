@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 import mysql.connector
-from src.dto import eventDto, logDto
+from src.dto import eventDto, workerDto, cellDto, robotArmDto, amrDto
 
 def save(saveRequest, connection):
     query = '''
@@ -84,10 +84,10 @@ def findByLogs(eventId, minute, connection):
         results = cursor.fetchall()
         attribute = [
             eventDto.EventLogsData(
-                workerLog=logDto.WorkerLogResponse.of(row),
-                cellLog=logDto.CellLogResponse.of(row),
-                robotArmLog=logDto.RobotArmLogResponse.of(row),
-                amrLog=logDto.AmrLogResponse.of(row)
+                workerLog=workerDto.WorkerResponse.of(row),
+                cellLog=cellDto.CellResponse.of(row),
+                robotArmLog=robotArmDto.RobotArmResponse.of(row),
+                amrLog=amrDto.AmrResponse.of(row)
             ) for row in results
         ]
         return eventDto.EventLogsResponse(key=eventId, Value='test', Attributes=attribute)
