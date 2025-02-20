@@ -1,20 +1,21 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from src.common import constData
 
 class RobotArmUpdateRequest(BaseModel):
 	recentStartTime: datetime
-	operatingStatus: str
+	operatingStatus: constData.RobotArmStatus
 	locationX: float
 	locationY: float
 	locationZ: float
 	direction: float
 	angle1: float
-	angle2: float
+	angle2: float   
 	angle3: float
 	electric_current: float
 	fever: float
-     
+    
 class RobotArmSaveRequest(BaseModel):
 	cellId: int
 

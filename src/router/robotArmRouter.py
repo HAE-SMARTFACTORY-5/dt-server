@@ -8,7 +8,7 @@ api = APIRouter()
 
 @api.post("/{robotArmId}", summary="로봇 팔 정보 업데이트")
 async def updateRobotArm(robotArmId: int, request: robotArmDto.RobotArmUpdateRequest) -> str:
-    robotArmResponse = robotArmService.updateRobotArm(robotArmId, request)
+    robotArmResponse = robotArmService.update(robotArmId, request)
     robotArmWidgetResponse = widgetService.getRobotArmWidget(robotArmId)
     websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM, robotArmResponse)
     websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM_WIDGET, robotArmWidgetResponse)

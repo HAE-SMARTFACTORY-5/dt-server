@@ -1,4 +1,5 @@
 from enum import Enum
+from src.common import constData
 
 class SocketGroup(Enum):
     FACTORY = "factory"
@@ -16,3 +17,16 @@ class SocketActionType(Enum):
     ROBOT_ARM_WIDGET = "robot-arm-widget"
     AMR_WIDGET = "amr-widget"
     PLAN_WIDGET = "plan-widget"
+
+class RobotArmStatus(Enum):
+    ACITVE = "ACTIVE"
+    INSPECTION = "INACTIVE"
+    INACTIVE = "PENDING"
+
+    def __str__(self):
+        return {
+            "ACTIVE": "정상 운전중",
+            "INACTIVE": "비가동중",
+            "PENDING": "점검 필요"
+        }[self.value]
+    
