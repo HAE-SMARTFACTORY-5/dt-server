@@ -9,7 +9,7 @@ def update(robotArmId, request, connection):
     '''
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(query, [request.recentStartTime, request.operatingStatus, request.locationX, request.locationY, request.locationZ,
+        cursor.execute(query, [request.recentStartTime, str(request.operatingStatus), request.locationX, request.locationY, request.locationZ,
                                request.direction, request.angle1, request.angle2, request.angle3, request.electric_current, request.fever, robotArmId])
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error update() in robotArmRepository: {e}")
@@ -48,16 +48,16 @@ def save(request, connection):
         cursor.close
         connection.close
 
-def updateRobotArmVibration(request, connection):
+def saveRobotArmVibration(romotArmId, request, connection):
     query = '''
         INSERT INTO robot_arm_vibration (robot_arm_id, vibration)
         VALUES (%s, %s)
     '''
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(query, [request.robotArmId, request.vibration])
+        cursor.execute(query, [romotArmId, request.vibration])
     except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=f"Error updateRobotArmVibration() in robotArmRepository: {e}")
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmVibration() in robotArmRepository: {e}")
     finally:
         cursor.close
         connection.close

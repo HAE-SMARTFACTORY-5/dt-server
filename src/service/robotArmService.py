@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-def updateRobotArm(robotArmId, request):
+def update(robotArmId, request):
     try:
         connection = getDbConnection()
         
@@ -41,12 +41,11 @@ def saveRobotArm(request):
     finally:
         connection.close
 
-def updateRobotArmVibration(request):
+def saveRobotArmVibration(romotArmId, request):
     try:
         connection = getDbConnection()
-        robotArmRepository.updateRobotArmVibration(request, connection)
+        robotArmRepository.saveRobotArmVibration(romotArmId, request, connection)
         connection.commit()
-        return widgetService.getRobotArmWidget(request.robotArmId)
     except Exception as e:
         connection.rollback()
         logging.error(e)
