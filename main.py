@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.router import workerRouter, cellRouter, robotArmRouter, amrRouter, eventRouter, widgetRouter, planRouter
+from src.router import workerRouter, cellRouter, robotArmRouter, amrRouter, eventRouter, widgetRouter, planRouter, productRouter
 from fastapi.middleware.cors import CORSMiddleware
 from src.socket import websocketHandler
 import uvicorn
@@ -14,6 +14,7 @@ app.include_router(amrRouter.api, prefix='/amr', tags=["amr"])
 app.include_router(eventRouter.api, prefix='/evnet', tags=["event"])
 app.include_router(widgetRouter.api, prefix='/widget', tags=["widget"])
 app.include_router(planRouter.api, prefix='/plan', tags=["plan"])
+app.include_router(productRouter.api, prefix='/product', tags=["product"])
 
 app.add_api_websocket_route("/ws/{typeId}/{clientId}", websocketHandler.websocketEndpoint)
 
