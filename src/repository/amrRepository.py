@@ -17,7 +17,7 @@ def update(amrId, request, connection):
         cursor.close
         connection.close
 
-def findByIdOrNull(amrId, connection):
+def findOrNullById(amrId, connection):
     query = '''
         SELECT *
         FROM amr

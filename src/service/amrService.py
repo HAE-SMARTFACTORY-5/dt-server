@@ -12,7 +12,7 @@ def updateAmr(amrId, request):
         connection = getDbConnection()
         
         # amr 존재 확인
-        amr = amrRepository.findByIdOrNull(amrId, connection)
+        amr = amrRepository.findOrNullById(amrId, connection)
         
         # amr이 존재 X -> 예외
         if amr == None:

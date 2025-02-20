@@ -12,7 +12,7 @@ def updateWorker(workerId, request):
         connection = getDbConnection()
 
         # worker 존재 확인
-        worker = wokerRepository.findByIdOrNull(workerId, connection)
+        worker = wokerRepository.findOrNullById(workerId, connection)
 
         # worker가 존재 X -> 예외
         if worker == None:

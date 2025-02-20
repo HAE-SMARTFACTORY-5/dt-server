@@ -17,7 +17,7 @@ def update(cellId, request, connection):
         connection.close
 
 
-def findByIdOrNull(cellId, connection):
+def findOrNullById(cellId, connection):
     query = '''
         SELECT *
         FROM cell

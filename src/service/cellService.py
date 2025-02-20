@@ -12,7 +12,7 @@ def updateCell(cellId, request):
         connection = getDbConnection()
 
         # amr 존재 확인
-        cell = cellRepository.findByIdOrNull(cellId, connection)
+        cell = cellRepository.findOrNullById(cellId, connection)
         
         # amr이 존재 X -> 예외
         if cell == None:

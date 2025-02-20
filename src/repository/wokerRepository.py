@@ -17,7 +17,7 @@ def update(workerId, request, connection):
         cursor.close
         connection.close
 
-def findByIdOrNull(workerId, connection):
+def findOrNullById(workerId, connection):
     query = '''
         SELECT *
         FROM worker

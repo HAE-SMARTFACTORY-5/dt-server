@@ -3,7 +3,6 @@ from typing import Optional
 from datetime import datetime
 
 class RobotArmUpdateRequest(BaseModel):
-	robotArmId: int
 	recentStartTime: datetime
 	operatingStatus: str
 	locationX: float
@@ -15,8 +14,11 @@ class RobotArmUpdateRequest(BaseModel):
 	angle3: float
 	electric_current: float
 	fever: float
+     
+class RobotArmSaveRequest(BaseModel):
+	cellId: int
 
-class RobotArmVibrationUpdateRequest(BaseModel):
+class RobotArmVibrationRequest(BaseModel):
     robotArmId: int
     vibration: float
 
@@ -36,32 +38,33 @@ class RobotArmResponse(BaseModel):
     fever: Optional[float] = None
 
     @classmethod
-    def of(cls, row):
-        return cls(
-                robotArmId=row['robot_arm_id'],
-                locationX=row['robot_location_x'],
-                locationY=row['robot_location_y'],
-                locationZ=row['robot_location_z'],
-                direction=row['robot_direction'],
-                angle1=row['angle_1'],
-                angle2=row['angle_2'],
-                angle3=row['angle_3'],
-                electric_current=row['electric_current'],
-                fever=row['fever']
-        )
-    
-    @classmethod
-    def withrequest(cls, request: RobotArmUpdateRequest):
-        return cls(
-                robotArmId=request.robotArmId,
-                locationX=request.locationX,
-                locationY=request.locationY,
-                locationZ=request.locationZ,
-                direction=request.direction,
-                angle1=request.angle1,
-                angle2=request.angle2,
-                angle3=request.angle3,
-                electric_current=request.electric_current,
-                fever=request.fever
-        )
+    def of(cls, robotArmId, source):
+        if isinstance(source, dict):  # `source`가 딕셔너리인 경우
+            return cls(
+                robotArmId=robotArmId,
+                locationX=source['robot_location_x'],
+                locationY=source['robot_location_y'],
+                locationZ=source['robot_location_z'],
+                direction=source['robot_direction'],
+                angle1=source['angle_1'],
+                angle2=source['angle_2'],
+                angle3=source['angle_3'],
+                electric_current=source['electric_current'],
+                fever=source['fever']
+            )
+        elif isinstance(source, RobotArmUpdateRequest):  # `source`가 특정 클래스인 경우
+            return cls(
+                robotArmId=robotArmId,
+                locationX=source.locationX,
+                locationY=source.locationY,
+                locationZ=source.locationZ,
+                direction=source.direction,
+                angle1=source.angle1,
+                angle2=source.angle2,
+                angle3=source.angle3,
+                electric_current=source.electric_current,
+                fever=source.fever
+            )
+        else:
+            raise TypeError("Invalid argument type. Expected dict or RobotArmUpdateRequest.")
     
