@@ -10,7 +10,6 @@ class SocketActionType(Enum):
     ROBOT_ARM = "robot-arm"
     ROBOT_ARM_VIBRATION = "robot-arm-vibration"
     AMR = "amr"
-    PLAN = "plan"
     #-------
     WORKER_WIDGET = "worker-widget"
     CELL_WIDGET = "cell"
