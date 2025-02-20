@@ -16,7 +16,6 @@ def getTotalWidget(factoryId, connection):
         result = cursor.fetchall()
         if len(result) > 0:
             result = result[0]
-        print(result)
         return widgetDto.TotalWidgetResponse.of(result=result)
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error getTotalWidget() in widgetRepository: {e}")

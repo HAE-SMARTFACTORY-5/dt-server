@@ -5,13 +5,13 @@ from src.socket import websocketHandler
 import uvicorn  
 
 app = FastAPI()
-app.include_router(workerRouter.api, prefix='/worker')
-app.include_router(cellRouter.api, prefix='/cell')
-app.include_router(robotArmRouter.api, prefix='/robot-arm')
-app.include_router(amrRouter.api, prefix='/amr')
-app.include_router(eventRouter.api, prefix='/evnet')
-app.include_router(widgetRouter.api, prefix='/widget')
-app.include_router(planRouter.api, prefix='/plan')
+app.include_router(workerRouter.api, prefix='/worker', tags=["worker"])
+app.include_router(cellRouter.api, prefix='/cell', tags=["cell"])
+app.include_router(robotArmRouter.api, prefix='/robot-arm', tags=["robot-arm"])
+app.include_router(amrRouter.api, prefix='/amr', tags=["amr"])
+app.include_router(eventRouter.api, prefix='/evnet', tags=["event"])
+app.include_router(widgetRouter.api, prefix='/widget', tags=["widget"])
+app.include_router(planRouter.api, prefix='/plan', tags=["plan"])
 
 app.add_api_websocket_route("/ws/{typeId}/{clientId}", websocketHandler.websocketEndpoint)
 

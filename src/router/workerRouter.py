@@ -6,9 +6,14 @@ from src.config import websocket
 api = APIRouter()
 manager = websocket.getConnectionManager()
 
-@api.post("", summary="작업자 정보 업데이트")
-async def updateWoker(request: workerDto.WokerUpdateRequest) -> str:
-    result = worketService.updateWorker(request)
+@api.post("/{workerId}", summary="작업자 정보 업데이트")
+async def updateWoker(workerId: int, request: workerDto.WokerUpdateRequest) -> str:
+    result = worketService.updateWorker(workerId, request)
     jsonResult = socketDto.SocketTypeResponse.of("WORKER", result).toJson()
     await manager.sendBroadcast('factory', jsonResult)
+    return "OK"
+
+@api.post("", summary="작업자 등록")
+async def saveWoker(request: workerDto.WokerSaveRequest) -> str:
+    worketService.saveWorker(request)
     return "OK"

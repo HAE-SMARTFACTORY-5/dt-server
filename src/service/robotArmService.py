@@ -8,16 +8,36 @@ import logging
 logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-def updateRobotArm(request):
+def updateRobotArm(robotArmId, request):
     try:
         connection = getDbConnection()
-        robotArmRepository.updateRobotArm(request, connection)
+        
+        # robot-arm 존재 확인
+        robotArm = robotArmRepository.findOrNullById(robotArmId, connection)
+
+        # amr이 존재 X -> 예외
+        if robotArm == None:
+            raise HTTPException(status_code=400, detail=f"Robot Arm Not Found. ID: {robotArmId}")
+        
+        robotArmRepository.update(robotArmId, request, connection)
         connection.commit()
-        return robotArmDto.RobotArmResponse.withrequest(request=request)
+        return robotArmDto.RobotArmResponse.of(robotArmId=robotArmId, source=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
         raise HTTPException(status_code=500, detail=f"Error updateRobotArm() in robotArmService: {e}")
+    finally:
+        connection.close
+
+def saveRobotArm(request):
+    try:
+        connection = getDbConnection()
+        robotArmRepository.save(request, connection)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        logging.error(e)
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArm() in robotArmService: {e}")
     finally:
         connection.close
 
