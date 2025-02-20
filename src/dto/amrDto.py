@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
      
-class AmrUpdateRequest(BaseModel):
-	amrId: int
+class AmrRequest(BaseModel):
+	amrType: str
 	locationX: float
 	locationY: float
 	locationZ: float
@@ -14,10 +14,12 @@ class AmrUpdateRequest(BaseModel):
 	collisionEtected: bool
 	state: str
 
+
 #-------------- Response
      
 class AmrResponse(BaseModel):
     amrId: Optional[int] = None
+    amrType: Optional[str] = None
     locationX: Optional[float] = None
     locationY: Optional[float] = None
     locationZ: Optional[float] = None
@@ -30,9 +32,10 @@ class AmrResponse(BaseModel):
     collisionEtected: Optional[bool] = None
 
     @classmethod
-    def of(cls, row):
+    def of(cls, amrId, row):
         return cls(
-                amrId=row['amr_id'],
+                amrId=amrId,
+                amrType=row['amr_type'],
                 locationX=row['amr_location_x'],
                 locationY=row['amr_location_y'],
                 locationZ=row['amr_location_z'],
@@ -46,9 +49,10 @@ class AmrResponse(BaseModel):
         )
     
     @classmethod
-    def withrequest(cls, request: AmrUpdateRequest):
+    def withrequest(cls, amrId, request: AmrRequest):
         return cls(
-                amrId=request.amrId,
+                amrId=amrId,
+                amrType=request.amrType,
                 locationX=request.locationX,
                 locationY=request.locationY,
                 locationZ=request.locationZ,
