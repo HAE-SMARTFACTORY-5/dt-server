@@ -11,7 +11,7 @@ manager = websocket.getConnectionManager()
 @api.post("/{workerId}", summary="작업자 정보 업데이트")
 async def updateWoker(workerId: int, request: workerDto.WokerUpdateRequest) -> str:
     workerResponse = worketService.updateWorker(workerId, request)
-    websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.WORKER, workerResponse)
+    await websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.WORKER, workerResponse)
     return "OK"
 
 @api.post("", summary="작업자 등록")

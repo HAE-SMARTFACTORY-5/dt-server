@@ -46,7 +46,6 @@ def saveRobotArmVibration(romotArmId, request):
         connection = getDbConnection()
         robotArmRepository.saveRobotArmVibration(romotArmId, request, connection)
         connection.commit()
-        return widgetService.getRobotArmWidget(romotArmId)
     except Exception as e:
         connection.rollback()
         logging.error(e)

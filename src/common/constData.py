@@ -13,7 +13,7 @@ class SocketActionType(Enum):
     AMR = "amr"
     #-------
     WORKER_WIDGET = "worker-widget"
-    CELL_WIDGET = "cell"
+    CELL_WIDGET = "cell-widget"
     ROBOT_ARM_WIDGET = "robot-arm-widget"
     AMR_WIDGET = "amr-widget"
     PLAN_WIDGET = "plan-widget"

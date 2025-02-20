@@ -10,8 +10,8 @@ api = APIRouter()
 async def updateRobotArm(robotArmId: int, request: robotArmDto.RobotArmUpdateRequest) -> str:
     robotArmResponse = robotArmService.update(robotArmId, request)
     robotArmWidgetResponse = widgetService.getRobotArmWidget(robotArmId)
-    websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM, robotArmResponse)
-    websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM_WIDGET, robotArmWidgetResponse)
+    await websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM, robotArmResponse)
+    await websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM_WIDGET, robotArmWidgetResponse)
     return "OK"
 
 @api.post("", summary="로봇 팔 등록")
@@ -21,7 +21,5 @@ async def saveRobotArm(request: robotArmDto.RobotArmSaveRequest) -> str:
 
 @api.post("/{robotArmId}/vibrations", summary="로봇 팔 진동상태 저장")
 async def saveRobotArmVibration(romotArmId: int, request: robotArmDto.RobotArmVibrationRequest) -> str:
-    robotArmResponse = robotArmService.saveRobotArmVibration(romotArmId, request)
-    websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM_VIBRATION, robotArmResponse)
-    websocketService.sendBroadcastWithActionType(SocketGroup.FACTORY, SocketActionType.ROBOT_ARM_WIDGET, robotArmResponse)
+    robotArmService.saveRobotArmVibration(romotArmId, request)
     return "OK"
