@@ -3,12 +3,14 @@ from typing import Optional
 from datetime import datetime
 
 class CellUpdateRequest(BaseModel):
-    cellId: int
     recentStartTime: datetime
     productId: Optional[int] = None
     processStatus: str
     completionRate: Optional[float] = None
 
+class CellSaveRequest(BaseModel):
+    factoryId: int
+    cellType: str
 
 #-------------- Response
 
@@ -19,19 +21,20 @@ class CellResponse(BaseModel):
     completionRate: Optional[float] = None
 
     @classmethod
-    def of(cls, row):
-        return cls(
-                cellId=row['cell_id'],
-                productId=row['product_id'],
-                processStatus=row['process_status'],
-                completionRate=row['completion_rate']
-        )
-    
-    @classmethod
-    def withrequest(cls, request: CellUpdateRequest):
-        return cls(
-                cellId=request.cellId,
-                productId=request.productId,
-                processStatus=request.processStatus,
-                completionRate=request.completionRate
-        )
+    def of(cls, cellId, source):
+        if isinstance(source, dict):  # `row`가 딕셔너리인 경우
+            return cls(
+                cellId=cellId,
+                productId=source['product_id'],
+                processStatus=source['process_status'],
+                completionRate=source['completion_rate']
+            )
+        elif isinstance(source, CellUpdateRequest):  # `request`가 특정 클래스인 경우
+            return cls(
+                cellId=cellId,
+                productId=source.productId,
+                processStatus=source.processStatus,
+                completionRate=source.completionRate
+            )
+        else:
+            raise TypeError("Invalid argument type. Expected dict or CellUpdateRequest.")

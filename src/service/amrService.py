@@ -21,7 +21,7 @@ def updateAmr(amrId, request):
         amrRepository.update(amrId, request, connection)
 
         connection.commit()
-        return amrDto.AmrResponse.withrequest(amrId=amrId, request=request)
+        return amrDto.AmrResponse.of(amrId=amrId, source=request)
     except Exception as e:
         connection.rollback()
         logging.error(e)
