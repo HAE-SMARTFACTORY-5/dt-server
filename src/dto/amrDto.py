@@ -33,7 +33,7 @@ class AmrResponse(BaseModel):
 
     @classmethod
     def of(cls, amrId, source):
-        if isinstance(source, dict):  # `row`가 딕셔너리인 경우
+        if isinstance(source, dict):  # `source`가 딕셔너리인 경우
             return cls(
                 amrId=amrId,
                 amrType=source['amr_type'],
@@ -48,7 +48,7 @@ class AmrResponse(BaseModel):
                 battery=source['battery'],
                 collisionEtected=source['collision_etected'],
             )
-        elif isinstance(source, AmrRequest):  # `request`가 특정 클래스인 경우
+        elif isinstance(source, AmrRequest):  # `source`가 특정 클래스인 경우
             return cls(
                 amrId=amrId,
                 amrType=source.amrType,

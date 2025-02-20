@@ -22,14 +22,14 @@ class CellResponse(BaseModel):
 
     @classmethod
     def of(cls, cellId, source):
-        if isinstance(source, dict):  # `row`가 딕셔너리인 경우
+        if isinstance(source, dict):  # `source`가 딕셔너리인 경우
             return cls(
                 cellId=cellId,
                 productId=source['product_id'],
                 processStatus=source['process_status'],
                 completionRate=source['completion_rate']
             )
-        elif isinstance(source, CellUpdateRequest):  # `request`가 특정 클래스인 경우
+        elif isinstance(source, CellUpdateRequest):  # `source`가 특정 클래스인 경우
             return cls(
                 cellId=cellId,
                 productId=source.productId,
