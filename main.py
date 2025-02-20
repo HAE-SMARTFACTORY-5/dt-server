@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from src.router import workerRouter, cellRouter, robotArmRouter, amrRouter, eventRouter, widgetRouter, planRouter
 from fastapi.middleware.cors import CORSMiddleware
 from src.socket import websocketHandler
-import uvicorn  
+import uvicorn
+import yaml
+import os
 
 app = FastAPI()
 app.include_router(workerRouter.api, prefix='/worker', tags=["worker"])
@@ -26,4 +28,14 @@ app.add_middleware(
 )
 
 if __name__ == '__main__':
-    uvicorn.run("main:app --log-config logConfig.yml", host="0.0.0.0", port=8000)
+    log_config_path = os.path.abspath("logConfig.yml")
+    
+    with open(log_config_path, "r") as f:
+        log_config = yaml.safe_load(f)
+
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8001,
+        log_config=log_config
+    )
