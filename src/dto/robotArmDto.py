@@ -19,7 +19,6 @@ class RobotArmSaveRequest(BaseModel):
 	cellId: int
 
 class RobotArmVibrationRequest(BaseModel):
-    robotArmId: int
     vibration: float
 
 

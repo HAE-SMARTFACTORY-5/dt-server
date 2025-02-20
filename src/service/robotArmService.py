@@ -41,12 +41,12 @@ def saveRobotArm(request):
     finally:
         connection.close
 
-def updateRobotArmVibration(request):
+def saveRobotArmVibration(romotArmId, request):
     try:
         connection = getDbConnection()
-        robotArmRepository.updateRobotArmVibration(request, connection)
+        robotArmRepository.saveRobotArmVibration(romotArmId, request, connection)
         connection.commit()
-        return widgetService.getRobotArmWidget(request.robotArmId)
+        return widgetService.getRobotArmWidget(romotArmId)
     except Exception as e:
         connection.rollback()
         logging.error(e)

@@ -48,16 +48,16 @@ def save(request, connection):
         cursor.close
         connection.close
 
-def updateRobotArmVibration(request, connection):
+def saveRobotArmVibration(romotArmId, request, connection):
     query = '''
         INSERT INTO robot_arm_vibration (robot_arm_id, vibration)
         VALUES (%s, %s)
     '''
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(query, [request.robotArmId, request.vibration])
+        cursor.execute(query, [romotArmId, request.vibration])
     except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=f"Error updateRobotArmVibration() in robotArmRepository: {e}")
+        raise HTTPException(status_code=500, detail=f"Error saveRobotArmVibration() in robotArmRepository: {e}")
     finally:
         cursor.close
         connection.close
