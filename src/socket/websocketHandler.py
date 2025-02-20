@@ -8,7 +8,7 @@ async def websocketEndpoint(websocket: WebSocket, typeId: str, clientId: str):
     try:
         while True:
             await websocket.receive_text()
-            await manager.sendBroadcast(typeId, f"Client {clientId} Connect.")
+            print(f"Client {clientId} Connect.")
     except WebSocketDisconnect:
         manager.disconnect(typeId, websocket)
-        await manager.sendBroadcast(typeId, f"Client {clientId} Disconnect.")
+        print(f"Client {clientId} Disconnect.")
